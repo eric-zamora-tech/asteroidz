@@ -202,10 +202,10 @@ function updateGameArea() {
 }
 
 function addThrust() {
-    // if(Player.fuel > 0) {
-    if(Math.abs(Player.speedX) < playerMaxSpeed) Player.speedX += 0.05 * Math.cos(Player.angle - Math.PI / 2);
-    if(Math.abs(Player.speedY) < playerMaxSpeed) Player.speedY += 0.05 * Math.sin(Player.angle - Math.PI / 2);
-    // }
+    if(fuel > 0) {
+        if(Math.abs(Player.speedX) < playerMaxSpeed) Player.speedX += 0.05 * Math.cos(Player.angle - Math.PI / 2);
+        if(Math.abs(Player.speedY) < playerMaxSpeed) Player.speedY += 0.05 * Math.sin(Player.angle - Math.PI / 2);
+    }
     fuel -= 0.05;
 
     if(fuel < 0) {
