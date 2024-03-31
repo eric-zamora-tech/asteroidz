@@ -2,14 +2,16 @@ var canvas = document.getElementById("gameArea");
 var ctx = canvas.getContext("2d");
 
 var Player;
-var playerMaxSpeed = 4;
+var playerSize;
+var playerRatio = 3.0 / 4.0;
+var playerMaxSpeed = 1;
 var hitBoxSize = 0.60;
 var friction = 0.01;
 var fuel = 100;
 var fuelStations = [];
 
 var gameArea = {
-    setSize: function() {
+    updateSize: function() {
         var canvasWidthCalculated = Math.min(800, 0.75 * window.innerWidth);
         var canvasHeightCalculated = (3.0 / 5.0) * canvasWidthCalculated;
 
@@ -17,7 +19,7 @@ var gameArea = {
         canvas.height = canvasHeightCalculated;
     },
     start: function() {
-        this.setSize();
+        this.updateSize();
         this.interval = setInterval(updateGameArea, 1);
         // setInterval(updateFuel, 5000);
     },
@@ -29,38 +31,95 @@ var gameArea = {
 
 function startGame() {
     gameArea.start();
-    Player = new Entity(canvas.width / 2, canvas.height / 2, 25, 45, "player");
+
+    playerSize = 0.035 * canvas.width;
+    Player = new Entity(50, 50, playerRatio * playerSize, playerSize / playerRatio, "player");
 
     for(var i = 0; i < 3; i++) {
         fuelStations.push(new Entity(Math.random() * (canvas.width - 100) + 50, Math.random() * (canvas.height - 100) + 50, 10, 10, "fuel"));
     }
 }
 
-function Entity(x, y, width, height, type) {
-    this.type = type;
+class Entity {
+    constructor(pDL, pDT, width, height, type) {
+        this.type = type;
 
-    this.x = x;
-    this.y = y;
-    
-    this.width = width;
-    this.height = height;
+        this.percentDisplacementFromLeft = pDL;
+        this.percentDisplacementFromTop = pDT;
 
-    this.centerX = this.x + this.width / 2;
-    this.centerY = this.y + this.height / 2;
+        this.width = width;
+        this.height = height;
+        
+        this.x = (pDL / 100) * canvas.width - this.width / 2;
+        this.y = (pDT / 100) * canvas.height - this.height / 2;
 
-    this.angle = 0;
-    
-    this.leftMostPointX = this.centerX - (this.width / 2) * Math.abs(Math.cos(this.angle)) - (this.height / 2) * Math.abs(Math.sin(this.angle));
-    this.rightMostPointX = this.centerX + (this.width / 2) * Math.abs(Math.cos(this.angle)) + (this.height / 2) * Math.abs(Math.sin(this.angle));
-    this.bottomMostPointY = this.centerY + (this.height / 2) * Math.abs(Math.cos(this.angle)) + (this.width / 2) * Math.abs(Math.sin(this.angle));
-    this.topMostPointY = this.centerY - (this.height / 2) * Math.abs(Math.cos(this.angle)) - (this.width / 2) * Math.abs(Math.sin(this.angle));
-    
-    this.speedX = 0;
-    this.speedY = 0;
-    this.isCollided = false;
-    
+        this.centerX = this.x + this.width / 2;
+        this.centerY = this.y + this.height / 2;
 
-    this.show = function() {
+        this.angle = 0;
+        
+        this.leftMostPointX = this.centerX - (this.width / 2) * Math.abs(Math.cos(this.angle)) - (this.height / 2) * Math.abs(Math.sin(this.angle));
+        this.rightMostPointX = this.centerX + (this.width / 2) * Math.abs(Math.cos(this.angle)) + (this.height / 2) * Math.abs(Math.sin(this.angle));
+        this.bottomMostPointY = this.centerY + (this.height / 2) * Math.abs(Math.cos(this.angle)) + (this.width / 2) * Math.abs(Math.sin(this.angle));
+        this.topMostPointY = this.centerY - (this.height / 2) * Math.abs(Math.cos(this.angle)) - (this.width / 2) * Math.abs(Math.sin(this.angle));
+        
+        this.speedX = 0;
+        this.speedY = 0;
+        this.isCollided = false;
+    }
+    
+    updateSize() {
+        playerSize = 0.035 * canvas.width;
+
+        this.width = playerRatio * playerSize;
+        this.height = playerSize / playerRatio;
+    }
+
+    updatePosition() {
+        this.percentDisplacementFromLeft += this.speedX;
+        this.percentDisplacementFromTop += this.speedY;
+
+        if(this.type == "player") {
+            this.speedX -= this.speedX * friction;
+            this.speedY -= this.speedY * friction;
+        }
+        
+        
+        if(this.percentDisplacementFromLeft <= 0) this.percentDisplacementFromLeft = 100;
+        if(this.percentDisplacementFromLeft > 100) this.percentDisplacementFromLeft %= 100;
+        if(this.percentDisplacementFromTop <= 0) this.percentDisplacementFromTop = 100;
+        if(this.percentDisplacementFromTop > 100) this.percentDisplacementFromTop %= 100;
+
+        this.x = (this.percentDisplacementFromLeft / 100) * canvas.width - this.width / 2;
+        this.y = (this.percentDisplacementFromTop / 100 ) * canvas.height - this.height / 2;
+        
+        this.centerX = this.x + this.width / 2;
+        this.centerY = this.y + this.height / 2;
+        
+        this.leftMostPointX = this.centerX - (this.width / 2) * Math.abs(Math.cos(this.angle)) - (this.height / 2) * Math.abs(Math.sin(this.angle));
+        this.rightMostPointX = this.centerX + (this.width / 2) * Math.abs(Math.cos(this.angle)) + (this.height / 2) * Math.abs(Math.sin(this.angle));
+        this.bottomMostPointY = this.centerY + (this.height / 2) * Math.abs(Math.cos(this.angle)) + (this.width / 2) * Math.abs(Math.sin(this.angle));
+        this.topMostPointY = this.centerY - (this.height / 2) * Math.abs(Math.cos(this.angle)) - (this.width / 2) * Math.abs(Math.sin(this.angle));
+
+        // if(this.isCollided) {
+        //     if(this.bottomMostPointY >= canvas.height || this.topMostPointY <= 0) {
+        //         this.y -= this.speedY;
+        //         this.speedY = -0.75 * this.speedY;
+        //     }
+        // }
+
+        // this.isCollided = false;
+        // if(this.x + Math.cos(this.angle - Math.PI / 2) < 0 || this.x >= canvas.width - this.width) {
+        //     this.x -= this.speedX;
+        //     this.speedX *= -0.5;
+        // }
+        // if(this.y + Math.sin(this.angle - Math.PI / 2) > canvas.height - this.height || this.y + Math.sin(this.angle - Math.PI / 2) < 0) {
+        //     this.y -= this.speedY;
+        //     this.speedY *= -0.5;
+        // }
+    }
+
+    show() {
         var playerImage = document.getElementById("playerImage");
 
         // Draw boundary points
@@ -97,48 +156,11 @@ function Entity(x, y, width, height, type) {
         }
 
         ctx.restore();
-    };
-
-    this.updatePosition = function() {
-        if(this.type == "player") {
-            this.speedX -= Math.sign(this.speedX) * friction;
-            this.speedY -= Math.sign(this.speedY) * friction;
-        }
-        this.x += this.speedX;
-        this.y += this.speedY;
-
-        if(this.x + this.width <= 0) this.x = canvas.width;
-        if(this.x > canvas.width) this.x = this.x % canvas.width - this.width;
-        if(this.y + this.height <= 0) this.y = canvas.height;
-        if(this.y > canvas.height) this.y = this.y % canvas.height - this.height;
-
-        this.centerX = this.x + this.width / 2;
-        this.centerY = this.y + this.height / 2;
-
-        this.leftMostPointX = this.centerX - (this.width / 2) * Math.abs(Math.cos(this.angle)) - (this.height / 2) * Math.abs(Math.sin(this.angle));
-        this.rightMostPointX = this.centerX + (this.width / 2) * Math.abs(Math.cos(this.angle)) + (this.height / 2) * Math.abs(Math.sin(this.angle));
-        this.bottomMostPointY = this.centerY + (this.height / 2) * Math.abs(Math.cos(this.angle)) + (this.width / 2) * Math.abs(Math.sin(this.angle));
-        this.topMostPointY = this.centerY - (this.height / 2) * Math.abs(Math.cos(this.angle)) - (this.width / 2) * Math.abs(Math.sin(this.angle));
-
-        // if(this.isCollided) {
-        //     if(this.bottomMostPointY >= canvas.height || this.topMostPointY <= 0) {
-        //         this.y -= this.speedY;
-        //         this.speedY = -0.75 * this.speedY;
-        //     }
-        // }
-
-        // this.isCollided = false;
-        // if(this.x + Math.cos(this.angle - Math.PI / 2) < 0 || this.x >= canvas.width - this.width) {
-        //     this.x -= this.speedX;
-        //     this.speedX *= -0.5;
-        // }
-        // if(this.y + Math.sin(this.angle - Math.PI / 2) > canvas.height - this.height || this.y + Math.sin(this.angle - Math.PI / 2) < 0) {
-        //     this.y -= this.speedY;
-        //     this.speedY *= -0.5;
-        // }
     }
 
-    this.detectCollisions = function(entity) {
+    
+
+    detectCollisions(entity) {
         // if((this.rightMostPointX > entity.leftMostPointX && this.leftMostPointX < entity.leftMostPointX && this.topMostPointY < entity.centerY && this.bottomMostPointY > entity.centerY) || (this.leftMostPointX > entity.rightMostPointX && this.rightMostPointX < entity.rightMostPointX && this.topMostPointY < entity.centerY && this.bottomMostPointY > entity.centerY) || (this.bottomMostPointY > entity.topMostPointY && this.topMostPointY < entity.topMostPointY && this.leftMostPointX < entity.centerX && this.rightMostPointX > entity.centerX) || (this.topMostPointY > entity.bottomMostPointY && this.bottomMostPointY < entity.bottomMostPointY && this.leftMostPointX < entity.centerY && this.rightMostPointX > entity.centerY)) {
         //     if(this.type = "fuel") {
         //         this.x = Math.random() * (canvas.width - 100) + 50;
@@ -186,10 +208,10 @@ function updateGameArea() {
     }
 
     ctx.fillStyle = `rgb(${(255 / 100) * (100 - fuel)}, ${(255 / 100) * fuel}, ${Math.floor(fuel)})`;
-    ctx.fillRect(15, canvas.height - 50, fuel * 2, 35);
+    ctx.fillRect(canvas.width / 30, 0.88 * canvas.height, (fuel / 100) * canvas.width / 4, Math.min(canvas.height / 11, 35));
 
     ctx.strokeStyle = "white";
-    ctx.strokeRect(15, canvas.height - 50, 200, 35);
+    ctx.strokeRect(canvas.width / 30, 0.88 * canvas.height, canvas.width / 4, Math.min(canvas.height / 11, 35));
 
     // for(var i = 0; i < fuelEntities.length; i++) {
     //     if(fuelEntities[i].isActive) {
@@ -209,8 +231,10 @@ function updateGameArea() {
 
 function addThrust() {
     if(fuel > 0) {
-        if(Math.abs(Player.speedX) < playerMaxSpeed) Player.speedX += 0.05 * Math.cos(Player.angle - Math.PI / 2);
-        if(Math.abs(Player.speedY) < playerMaxSpeed) Player.speedY += 0.05 * Math.sin(Player.angle - Math.PI / 2);
+        Player.speedX += 0.01 * Math.cos(Player.angle - Math.PI / 2);
+        Player.speedY += 0.01 * Math.sin(Player.angle - Math.PI / 2);
+        // if(Math.abs(Player.speedX) < playerMaxSpeed) Player.speedX += 0.5 * Math.cos(Player.angle - Math.PI / 2);
+        // if(Math.abs(Player.speedY) < playerMaxSpeed) Player.speedY += 0.5 * Math.sin(Player.angle - Math.PI / 2);
     }
     fuel -= 0.05;
 
@@ -248,5 +272,8 @@ document.addEventListener('keyup', function(event) {
     }
 });
 window.addEventListener('resize', function(event) {
-    gameArea.setSize();
+    gameArea.updateSize();
+
+    Player.updateSize();
+    Player.updatePosition();
 });
