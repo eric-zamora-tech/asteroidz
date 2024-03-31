@@ -19,6 +19,10 @@ var gameArea = {
         canvas.height = canvasHeightCalculated;
     },
     start: function() {
+        var elementsToHide = document.getElementsByClassName("toggle-hidden");
+        elementsToHide[0].style.display = 'none';
+        elementsToHide[1].style.display = 'none';
+
         this.updateSize();
         this.interval = window.requestAnimationFrame(updateGameArea);
         // setInterval(updateFuel, 5000);
@@ -123,14 +127,14 @@ class Entity {
         var playerImage = document.getElementById("playerImage");
 
         // Draw boundary points
-        ctx.beginPath();
-        ctx.arc(this.leftMostPointX, this.centerY, 2, 0, Math.PI * 2);
-        ctx.arc(this.rightMostPointX, this.centerY, 2, 0, Math.PI * 2);
-        ctx.arc(this.centerX, this.bottomMostPointY, 2, 0, Math.PI * 2);
-        ctx.arc(this.centerX, this.topMostPointY, 2, 0, Math.PI * 2);
-        ctx.fillStyle = 'red';
-        ctx.fill();
-        ctx.closePath();
+        // ctx.beginPath();
+        // ctx.arc(this.leftMostPointX, this.centerY, 2, 0, Math.PI * 2);
+        // ctx.arc(this.rightMostPointX, this.centerY, 2, 0, Math.PI * 2);
+        // ctx.arc(this.centerX, this.bottomMostPointY, 2, 0, Math.PI * 2);
+        // ctx.arc(this.centerX, this.topMostPointY, 2, 0, Math.PI * 2);
+        // ctx.fillStyle = 'red';
+        // ctx.fill();
+        // ctx.closePath();
 
         ctx.save();
 
@@ -141,8 +145,8 @@ class Entity {
         if(this.type == "player") {
             ctx.fillStyle = "white";
             ctx.drawImage(playerImage, -this.width / 2 / hitBoxSize, -this.height / 2 / hitBoxSize, this.width / hitBoxSize, this.height / hitBoxSize);
-            if(this.type == "player") ctx.strokeStyle = "red";
-            ctx.strokeRect(-this.width / 2, -this.height / 2, this.width, this.height);
+            // if(this.type == "player") ctx.strokeStyle = "red";
+            // ctx.strokeRect(-this.width / 2, -this.height / 2, this.width, this.height);
         }
 
         if(this.type == "fuel") {

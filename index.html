@@ -7,12 +7,14 @@
     <link rel="stylesheet" href="./styles.css">
     <script src="./main.js" defer></script>
 </head>
-<body onload="startGame()" width="100%">
-    <section class="gameTitle">
+<body width="100%">
+    <section class="gameDescription">
         <h1>ASTEROIDZ</h1>
+        <p class="toggle-hidden">Welcome to my Astroidz game! In this classic arcade-inspired experience, players navigate a spacecraft through a field of asteroids, blasting them to smithereens while avoiding collisions. Built with HTML, CSS, and JavaScript, this project showcases my skills in front-end development and game design, demonstrating my ability to create engaging software experiences.</p>
+        <button onclick="startGame()" class="toggle-hidden button" role="button">Start</button>
     </section>
     <section class="gameSection">
-        <canvas id="gameArea"></canvas>
+        <canvas display="none" id="gameArea"></canvas>
     </section>
     <img id="playerImage" src="./rocketship.png" width=50  hidden>
 </body>
