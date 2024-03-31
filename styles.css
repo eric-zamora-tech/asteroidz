@@ -2,3 +2,15 @@ html, body {
     padding: 0;
     margin: 0;
 }
+
+.gameTitle {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-align: center;
+    margin: 2rem 0;
+}
+
+.gameSection {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}

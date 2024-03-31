@@ -9,9 +9,15 @@ var fuel = 100;
 var fuelStations = [];
 
 var gameArea = {
+    setSize: function() {
+        var canvasWidthCalculated = Math.min(800, 0.75 * window.innerWidth);
+        var canvasHeightCalculated = (3.0 / 5.0) * canvasWidthCalculated;
+
+        canvas.width = canvasWidthCalculated;
+        canvas.height = canvasHeightCalculated;
+    },
     start: function() {
-        canvas.width = window.innerWidth;
-        canvas.height = 700;
+        this.setSize();
         this.interval = setInterval(updateGameArea, 1);
         // setInterval(updateFuel, 5000);
     },
@@ -240,4 +246,7 @@ document.addEventListener('keyup', function(event) {
     if(controller[event.key]) {
         controller[event.key].pressed = false;
     }
+});
+window.addEventListener('resize', function(event) {
+    gameArea.setSize();
 });
