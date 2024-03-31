@@ -20,7 +20,7 @@ var gameArea = {
     },
     start: function() {
         this.updateSize();
-        this.interval = setInterval(updateGameArea, 1);
+        this.interval = window.requestAnimationFrame(updateGameArea);
         // setInterval(updateFuel, 5000);
     },
     clear: function() {
@@ -227,6 +227,7 @@ function updateGameArea() {
     // }
 
     Player.show();
+    window.requestAnimationFrame(updateGameArea);
 }
 
 function addThrust() {
