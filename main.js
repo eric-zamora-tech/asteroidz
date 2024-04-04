@@ -9,6 +9,7 @@ var hitBoxSize = 0.60;
 var friction = 0.01;
 var fuel = 100;
 var fuelStations = [];
+var playerScore = 0;
 
 var gameArea = {
     updateSize: function() {
@@ -25,7 +26,9 @@ var gameArea = {
 
         this.updateSize();
         this.interval = window.requestAnimationFrame(updateGameArea);
-        // setInterval(updateFuel, 5000);
+        setInterval(() => {
+            playerScore++;
+        }, 5000);
     },
     clear: function() {
         ctx.fillStyle = "black";
@@ -39,9 +42,13 @@ function startGame() {
     playerSize = 0.035 * canvas.width;
     Player = new Entity(50, 50, playerRatio * playerSize, playerSize / playerRatio, "player");
 
-    for(var i = 0; i < 3; i++) {
-        fuelStations.push(new Entity(Math.random() * (canvas.width - 100) + 50, Math.random() * (canvas.height - 100) + 50, 10, 10, "fuel"));
-    }
+    fuelStations.push(new Entity(-500, -500, 13, 20, "fuel"));
+    setTimeout(() => {
+        fuelStations[0].percentDisplacementFromLeft = Math.random() * (80) + 10;
+        fuelStations[0].percentDisplacementFromTop = Math.random() * (80) + 10;
+
+        fuelStations[0].updatePosition();
+    }, 20000);
 }
 
 class Entity {
@@ -86,13 +93,14 @@ class Entity {
         if(this.type == "player") {
             this.speedX -= this.speedX * friction;
             this.speedY -= this.speedY * friction;
+
+            if(this.percentDisplacementFromLeft <= 0) this.percentDisplacementFromLeft = 100;
+            if(this.percentDisplacementFromLeft > 100) this.percentDisplacementFromLeft %= 100;
+            if(this.percentDisplacementFromTop <= 0) this.percentDisplacementFromTop = 100;
+            if(this.percentDisplacementFromTop > 100) this.percentDisplacementFromTop %= 100;
         }
         
         
-        if(this.percentDisplacementFromLeft <= 0) this.percentDisplacementFromLeft = 100;
-        if(this.percentDisplacementFromLeft > 100) this.percentDisplacementFromLeft %= 100;
-        if(this.percentDisplacementFromTop <= 0) this.percentDisplacementFromTop = 100;
-        if(this.percentDisplacementFromTop > 100) this.percentDisplacementFromTop %= 100;
 
         this.x = (this.percentDisplacementFromLeft / 100) * canvas.width - this.width / 2;
         this.y = (this.percentDisplacementFromTop / 100 ) * canvas.height - this.height / 2;
@@ -125,6 +133,7 @@ class Entity {
 
     show() {
         var playerImage = document.getElementById("playerImage");
+        var gasImage = document.getElementById("gasImage");
 
         // Draw boundary points
         // ctx.beginPath();
@@ -150,13 +159,7 @@ class Entity {
         }
 
         if(this.type == "fuel") {
-            ctx.fillStyle = "brown";
-            ctx.beginPath();
-            ctx.ellipse(0, 0, this.width, this.height, 0, 0, Math.PI * 2);
-            ctx.fill();
-            ctx.closePath();
-            ctx.strokeStyle = "green";
-            ctx.strokeRect(-this.width / 2 , -this.height / 2, this.width, this.height);
+            ctx.drawImage(gasImage, -this.width / 2 / hitBoxSize, -this.height / 2 / hitBoxSize, this.width / hitBoxSize, this.height / hitBoxSize);
         }
 
         ctx.restore();
@@ -178,26 +181,19 @@ class Entity {
                 fuel += 25;
                 if(fuel > 100) fuel = 100;
 
-                this.x = -5000;
-                this.y = -5000;
+                this.percentDisplacementFromLeft = -500;
+                this.percentDisplacementFromTop = -500;
                 this.updatePosition();
                 
                 setTimeout(() => {
-                    this.x = Math.random() * (canvas.width - 100) + 50;
-                    this.y = Math.random() * (canvas.height - 100) + 50;
+                    this.percentDisplacementFromLeft = Math.random() * (80) + 10;
+                    this.percentDisplacementFromTop = Math.random() * (80) + 10;
 
                     this.updatePosition();
-                }, 10000);
+                }, 20000);
             }
         }
     }
-}
-
-function checkFuelStation() {
-    var randX = (canvas.width - 50) * Math.random();
-    var randY = (canvas.height - 50) * Math.random();
-
-    // fuelEntities.push({x: randX, y: randY, isActive: true});
 }
 
 function updateGameArea() {
@@ -205,8 +201,7 @@ function updateGameArea() {
     executeKeyboardMoves();
 
     Player.updatePosition();
-
-    for(var i = 0; i < 3; i++) {
+    for(var i = 0; i < fuelStations.length; i++) {
         fuelStations[i].detectCollisions(Player);
         fuelStations[i].show();
     }
@@ -216,19 +211,6 @@ function updateGameArea() {
 
     ctx.strokeStyle = "white";
     ctx.strokeRect(canvas.width / 30, 0.88 * canvas.height, canvas.width / 4, Math.min(canvas.height / 11, 35));
-
-    // for(var i = 0; i < fuelEntities.length; i++) {
-    //     if(fuelEntities[i].isActive) {
-    //         ctx.fillStyle = "brown";
-    //         ctx.beginPath();
-    //         ctx.arc(fuelEntities[i].x, fuelEntities[i].y, 10, 0, Math.PI * 2);
-    //         ctx.fill();
-    //         ctx.closePath();
-    //     } 
-    //     else {
-    //         delete fuelEntities[i];
-    //     }
-    // }
 
     Player.show();
     window.requestAnimationFrame(updateGameArea);
@@ -276,6 +258,18 @@ document.addEventListener('keyup', function(event) {
         controller[event.key].pressed = false;
     }
 });
+// document.addEventListener('touchstart', function(event) {
+//     console.log(event);
+//     // if(controller[event.key]) {
+//     //     controller[event.key].pressed = true;
+//     // }
+// });
+// document.addEventListener('touchend', function(event) {
+//     console.log(event);
+//     // if(controller[event.key]) {
+//     //     controller[event.key].pressed = false;
+//     // }
+// });
 window.addEventListener('resize', function(event) {
     gameArea.updateSize();
 

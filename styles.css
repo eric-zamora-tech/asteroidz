@@ -3,23 +3,39 @@ html, body {
     margin: 0;
 }
 
-.gameDescription {
-    display: flex;
-    overflow-y: hidden;
-    flex-direction: column;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+body {
+    overflow: hidden;
+    font-family: system-ui,-apple-system,system-ui,"Helvetica Neue",Helvetica,Arial,sans-serif;
     text-align: center;
-    align-items: center;
-    justify-content: center;
-    width: 80ch;
-    margin: 3rem auto;
+    padding: 1rem;
 }
 
-.gameSection {
+h1 {
+    margin: 3rem 0;
+}
+p {
+    max-width: 90ch;
+    margin-bottom: 2rem;
+}
+p, canvas {
+    margin-top: 3rem;
+}
+hr {
+    width: 80%;
+}
+
+.gameDescription {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+/* .gameSection {
     width: 100%;
     display: flex;
     justify-content: center;
-}
+} */
 
 
 .button {
@@ -32,7 +48,7 @@ html, body {
   color: rgba(0, 0, 0, 0.85);
   cursor: pointer;
   display: inline-flex;
-  font-family: system-ui,-apple-system,system-ui,"Helvetica Neue",Helvetica,Arial,sans-serif;
+  
   font-size: 16px;
   font-weight: 600;
   justify-content: center;
