@@ -5,7 +5,6 @@ var Player;
 var playerSize;
 var playerRatio = 3.0 / 4.0;
 var playerMaxSpeed = 1;
-var hitBoxSize = 0.60;
 var friction = 0.01;
 var fuel = 100;
 var fuelStations = [];
@@ -39,10 +38,10 @@ var gameArea = {
 function startGame() {
     gameArea.start();
 
-    playerSize = 0.035 * canvas.width;
+    playerSize = 0.06 * canvas.width;
     Player = new Entity(50, 50, playerRatio * playerSize, playerSize / playerRatio, "player");
 
-    fuelStations.push(new Entity(-500, -500, 13, 20, "fuel"));
+    fuelStations.push(new Entity(-500, -500, 15, 25, "fuel"));
     setTimeout(() => {
         fuelStations[0].percentDisplacementFromLeft = Math.random() * (80) + 10;
         fuelStations[0].percentDisplacementFromTop = Math.random() * (80) + 10;
@@ -80,7 +79,7 @@ class Entity {
     }
     
     updateSize() {
-        playerSize = 0.035 * canvas.width;
+        playerSize = 0.06 * canvas.width;
 
         this.width = playerRatio * playerSize;
         this.height = playerSize / playerRatio;
@@ -153,13 +152,13 @@ class Entity {
 
         if(this.type == "player") {
             ctx.fillStyle = "white";
-            ctx.drawImage(playerImage, -this.width / 2 / hitBoxSize, -this.height / 2 / hitBoxSize, this.width / hitBoxSize, this.height / hitBoxSize);
+            ctx.drawImage(playerImage, -this.width / 2, -this.height / 2, this.width, this.height);
             // if(this.type == "player") ctx.strokeStyle = "red";
             // ctx.strokeRect(-this.width / 2, -this.height / 2, this.width, this.height);
         }
 
         if(this.type == "fuel") {
-            ctx.drawImage(gasImage, -this.width / 2 / hitBoxSize, -this.height / 2 / hitBoxSize, this.width / hitBoxSize, this.height / hitBoxSize);
+            ctx.drawImage(gasImage, -this.width / 2, -this.height / 2, this.width, this.height);
         }
 
         ctx.restore();
@@ -208,10 +207,10 @@ function updateGameArea() {
     Player.show();
 
     ctx.fillStyle = `rgb(${(255 / 100) * (100 - fuel)}, ${(255 / 100) * fuel}, ${Math.floor(fuel)})`;
-    ctx.fillRect(canvas.width / 30, 0.88 * canvas.height, (fuel / 100) * canvas.width / 4, Math.min(canvas.height / 11, 35));
+    ctx.fillRect(canvas.width / 30, 0.88 * canvas.height, (fuel / 100) * canvas.width / 4, Math.min(canvas.height / 15, 35));
 
     ctx.strokeStyle = "white";
-    ctx.strokeRect(canvas.width / 30, 0.88 * canvas.height, canvas.width / 4, Math.min(canvas.height / 11, 35));
+    ctx.strokeRect(canvas.width / 30, 0.88 * canvas.height, canvas.width / 4, Math.min(canvas.height / 15, 35));
 
     ctx.fillStyle="white";
     ctx.font = "36px sans-serif";
