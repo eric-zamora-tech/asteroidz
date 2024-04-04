@@ -205,6 +205,7 @@ function updateGameArea() {
         fuelStations[i].detectCollisions(Player);
         fuelStations[i].show();
     }
+    Player.show();
 
     ctx.fillStyle = `rgb(${(255 / 100) * (100 - fuel)}, ${(255 / 100) * fuel}, ${Math.floor(fuel)})`;
     ctx.fillRect(canvas.width / 30, 0.88 * canvas.height, (fuel / 100) * canvas.width / 4, Math.min(canvas.height / 11, 35));
@@ -212,7 +213,10 @@ function updateGameArea() {
     ctx.strokeStyle = "white";
     ctx.strokeRect(canvas.width / 30, 0.88 * canvas.height, canvas.width / 4, Math.min(canvas.height / 11, 35));
 
-    Player.show();
+    ctx.fillStyle="white";
+    ctx.font = "36px sans-serif";
+    ctx.fillText(`Score: ${playerScore}`, 10, 50);
+
     window.requestAnimationFrame(updateGameArea);
 }
 
