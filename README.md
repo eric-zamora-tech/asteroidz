@@ -1,7 +1,5 @@
 <h1 align="center">
   <br>
-    <img src="https://raw.githubusercontent.com/YOUR_USERNAME/YOUR_REPOSITORY/master/assets/asteroid_logo.png" alt="Asteroidz" width="200">
-  <br>
     Asteroidz
   <br>
 </h1>
@@ -56,4 +54,15 @@ $ cd asteroidz
 
 # Open the game in your browser
 $ open index.html
+```
+> Note This game runs entirely in the browser, so no installation is necessary beyond cloning the repository.
 
+## Download
+You can play the game directly by downloading the latest version or clone the repository to run it locally.
+
+## Credits
+This game uses the following resources:
+* **freeCodeCamp** - [Code Asteroids in JavaScript (1979 Atari game) - tutorial](https://www.youtube.com/watch?v=H9CSWMxJx84)
+* **JavaScript** - For game logic and interactivity.
+* **HTML5 Canvas** - For rendering the game graphics.
+* **CSS** - For styling the game interface.
