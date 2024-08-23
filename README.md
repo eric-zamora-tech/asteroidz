@@ -47,7 +47,7 @@ To clone and run this game locally, you'll need [Git](https://git-scm.com) insta
 
 ```bash
 # Clone this repository
-$ git clone https://github.com/YOUR_USERNAME/asteroidz
+$ git clone https://github.com/eric-zamora-tech/asteroidz
 
 # Go into the repository
 $ cd asteroidz
