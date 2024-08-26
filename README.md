@@ -7,21 +7,6 @@
 <h4 align="center">A modern take on the classic Asteroids game, built with HTML, CSS, and JavaScript.</h4>
 
 <p align="center">
-  <a href="https://badge.fury.io/js/asteroidz">
-    <img src="https://badge.fury.io/js/asteroidz.svg" alt="npm version">
-  </a>
-  <a href="https://gitter.im/ericzamora/asteroidz">
-    <img src="https://badges.gitter.im/ericzamora/asteroidz.svg" alt="Gitter">
-  </a>
-  <a href="https://saythanks.io/to/ericzamora@gmail.com">
-      <img src="https://img.shields.io/badge/SayThanks.io-%E2%98%BC-1EAEDB.svg" alt="Say Thanks">
-  </a>
-  <a href="https://www.paypal.me/EricZamora">
-    <img src="https://img.shields.io/badge/$-donate-ff69b4.svg?maxAge=2592000&amp;style=flat" alt="Donate">
-  </a>
-</p>
-
-<p align="center">
   <a href="#key-features">Key Features</a> •
   <a href="#how-to-use">How To Use</a> •
   <a href="#download">Download</a> •
