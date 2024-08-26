@@ -28,7 +28,11 @@
 
 ## How To Use
 
-To clone and run this game locally, you'll need [Git](https://git-scm.com) installed on your computer. From your command line:
+### 1. Play Online
+Simply visit the [hosted]() URL to start playing the game directly in your web browser.
+
+### 2. Run Locally
+To clone and run this game locally, you'll need [Git](https://git-scm.com) installed. From your command line, run:
 
 ```bash
 # Clone this repository
@@ -41,9 +45,6 @@ $ cd asteroidz
 $ open index.html
 ```
 > Note This game runs entirely in the browser, so no installation is necessary beyond cloning the repository.
-
-## Download
-You can play the game directly by downloading the latest version or clone the repository to run it locally.
 
 ## Credits
 This game uses the following resources:
