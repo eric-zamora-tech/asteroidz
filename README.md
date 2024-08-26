@@ -12,7 +12,7 @@
   <a href="#credits">Credits</a>
 </p>
 
-![screenshot]([https://raw.githubusercontent.com/eric-zamora-tech//master/assets/screenshot.png](https://raw.githubusercontent.com/eric-zamora-tech/asteroidz/main/assets/gameplay.png))
+![screenshot](https://raw.githubusercontent.com/eric-zamora-tech/asteroidz/main/assets/gameplay.png)
 
 ## Key Features
 
