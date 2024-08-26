@@ -4,11 +4,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <!-- <link href="styles.css" rel="stylesheet"> -->
     <title>Asteroidz</title>
 </head>
 
-<body>
-    <canvas id="gameCanvas" width="700" height="500"></canvas>
+<body class="text-bg-secondary">
+    <div class="d-flex flex-column align-items-center">
+        <h1 class="py-4">Asteroidz</h1>
+        <canvas class="mx-auto" id="gameCanvas" width="700" height="500"></canvas>
+        <h2 class="py-3">Controls</h2>
+        <div class="d-flex gap-5">
+            <div class="d-flex flex-column align-items-center">
+                <img width="100px" src="./assets/keyboard-arrow-keys-icon.png" />
+                <p class="text-center">ARROW KEYS <br> move ship</p>
+            </div>
+            <div class="d-flex flex-column align-items-center justify-content-end">
+                <img width="60px" src="./assets/space-bar.png" />
+                <p class="text-center">SPACE BAR <br> shoot lasers</p>
+            </div>
+        </div>
+    </div>
     <script src="main.js"></script>
 </body>
 

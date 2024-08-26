@@ -1,0 +1,12 @@
+body {
+    width: 100vw;
+    padding: 2rem 0;
+    background-color: #282C34;
+}
+
+.justify-center {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    justify-content: center;
+}
